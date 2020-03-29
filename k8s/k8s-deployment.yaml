@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shiki-web
+spec:
+  selector:
+    matchLabels:
+      app: shiki-web
+  template:
+    metadata:
+      labels:
+        app: shiki-web
+    spec:
+      containers:
+      - name: shiki-web
+        image: shikitak/shiki-web
+        ports:
+        - containerPort: 1323
