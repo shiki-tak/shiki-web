@@ -12,8 +12,9 @@ import (
 )
 
 const (
-	echoP := "1323"
+	echoP = "1323/tcp"
 )
+
 func Test_Echo(t *testing.T) {
 	ctx := context.Background()
 
@@ -21,7 +22,7 @@ func Test_Echo(t *testing.T) {
 		FromDockerfile: testcontainers.FromDockerfile{
 			Context: "../",
 		},
-		ExposedPorts: []string{echoP + "/tcp"},
+		ExposedPorts: []string{echoP},
 		WaitingFor:   wait.ForListeningPort(nat.Port(echoP)),
 	}
 
