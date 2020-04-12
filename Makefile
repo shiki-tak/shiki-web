@@ -24,7 +24,7 @@ clean-docker: clean-docker
 	docker rmi -f shikitak/shiki-web:latest || true
 
 build-docker:
-		docker build -t shikitak/shiki-web:latest .
+	docker build -t shikitak/shiki-web:latest .
 
 run-docker: build-docker
-		docker run -p 1323:1323 shikitak/shiki-web:latest
+	docker run -p 1323:1323 shikitak/shiki-web:latest
