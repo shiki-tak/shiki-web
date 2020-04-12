@@ -3,7 +3,7 @@ services:
     api:
         build: .
         container_name: shiki-web
-        command: go run main.go
+        command: go run app/server/main.go
         volumes:
             - .:/shiki-web
         ports:

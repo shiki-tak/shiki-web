@@ -5,4 +5,4 @@ RUN go get github.com/labstack/echo/...
 WORKDIR /shiki-web
 ADD . /shiki-web
 
-CMD ["go", "run", "app/main.go"]
+CMD ["go", "run", "app/server/main.go"]
