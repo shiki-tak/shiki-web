@@ -1,5 +1,6 @@
 GOCMD=go
 GOBUILD=$(GOCMD) build
+GOTEST=$(GOCMD) test
 
 BINARY_HOME=build
 BINARY_NAME=shiki-web
@@ -15,16 +16,20 @@ clean:
 build: clean
 	$(GOBUILD) -o ${BINARY_HOME}/$(BINARY_NAME) -v
 
+test:
+	$(GOTEST) -v ./...
+
 install: go.sum
 	$(GOCMD) install
 
-clean-docker: clean-docker
+clean-docker:
 	docker kill  $(docker ps -a -q  --filter ancestor="shikitak/shiki-web:latest") || true
 	docker rm -f $(docker ps -a -q  --filter ancestor="shikitak/shiki-web:latest") || true
 	docker rmi -f shikitak/shiki-web:latest || true
 
-build-docker:
+build-docker: clean-docker
 	docker build -t shikitak/shiki-web:latest .
 
-run-docker: build-docker
-	docker run -p 1323:1323 shikitak/shiki-web:latest
+run-dev: build-docker
+	docker-compose up -d
+	# docker run -p 1323:1323 shikitak/shiki-web:latest
