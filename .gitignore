@@ -35,3 +35,6 @@ home/*
 # GoReleaser
 dist
 node_modules
+
+# DB
+db
