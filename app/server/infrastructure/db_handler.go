@@ -1,6 +1,10 @@
 package infrastructure
 
 import (
+	"context"
+	"fmt"
+	"time"
+
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -10,10 +14,25 @@ type MongoDBHandler struct {
 }
 
 func NewMongoDBHandler(url string) (*MongoDBHandler, error) {
-	client, err := mongo.NewClient(options.Client().ApplyURI(url))
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://localhost:27017"))
 	if err != nil {
 		return nil, err
 	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), 300*time.Second)
+	defer cancel()
+	err = client.Connect(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	err = client.Ping(context.TODO(), nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	fmt.Println("Connected to MongoDB!")
 
 	return &MongoDBHandler{MongoCli: client}, nil
 }

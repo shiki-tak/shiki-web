@@ -1,11 +1,6 @@
 version: '3'
 
 services:
-  shiki-web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: shiki-web
   mongo:
     image: mongo:4.0
     container_name: mongo

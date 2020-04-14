@@ -37,4 +37,5 @@ dist
 node_modules
 
 # DB
-db
+/db
+/configdb
