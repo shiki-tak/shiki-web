@@ -81,7 +81,7 @@ func (cc *ClimbedController) Delete(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	err = cc.Interactor.DeleteGetById(id)
+	err = cc.Interactor.Remove(id)
 	if err != nil {
 		return c.JSON(http.StatusForbidden, err)
 	}
