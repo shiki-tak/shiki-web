@@ -1,11 +1,6 @@
 version: '3'
 
 services:
-  shiki-web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: shiki-web
   mongo:
     image: mongo:4.0
     container_name: mongo
@@ -13,8 +8,8 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - mongo:/data/db
-
+      - ./db:/data/db
+      - ./configdb:/data/configdb
   mongo-express:
     image: mongo-express
     container_name: mongo-express

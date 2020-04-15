@@ -1,0 +1,5 @@
+curl -X POST 'http://localhost:1323/api/v1/climbed_mountains' -d '{"name": "石鎚山", "height": 1982, "climbed_date": "2013/10/12", "weather": "晴れ", "number": 6, "description": "初めての登山", "image_url": ""}' -H 'Content-Type: application/json'
+curl -X POST 'http://localhost:1323/api/v1/climbed_mountains' -d '{"name": "大山", "height": 1729, "climbed_date": "2015/09/20", "weather": "晴れ", "number": 2, "description": "帰省したときに地元の友達と", "image_url": ""}' -H 'Content-Type: application/json'
+
+curl -X GET 'http://localhost:1323/api/v1/climbed_mountains/1'
+curl -X GET 'http://localhost:1323/api/v1/climbed_mountains'
