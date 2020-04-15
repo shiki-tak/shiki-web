@@ -2,14 +2,16 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
+	"github.com/shiki-tak/shiki-web/app/server/domain"
 	"github.com/shiki-tak/shiki-web/app/server/interfaces/database"
 	"github.com/shiki-tak/shiki-web/app/server/usecase"
 )
 
 const (
-	Path = "/climbed"
+	Path = "/climbed_mountains"
 	Id   = "id"
 )
 
@@ -17,28 +19,58 @@ type ClimbedController struct {
 	Interactor usecase.ClimbedMountainInteractor
 }
 
-func NewClimbedController(mongoDBHandler database.MongoDBHandler) *ClimbedController {
+func NewClimbedController(sqlHandler database.SqlHandler) *ClimbedController {
 	return &ClimbedController{
 		Interactor: usecase.ClimbedMountainInteractor{
 			ClimbedRepository: &database.ClimbedMountainRepository{
-				MongoDBHandler: mongoDBHandler,
+				SqlHandler: sqlHandler,
 			},
 		},
 	}
 }
 
-func (p *ClimbedController) Create(c echo.Context) error {
-	return c.JSON(http.StatusOK, "create api")
+func (cc *ClimbedController) Create(c echo.Context) error {
+	cm := domain.ClimbedMountain{}
+	if err := c.Bind(&cm); err != nil {
+		return err
+	}
+
+	err := cc.Interactor.Add(cm)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	return c.JSON(http.StatusOK, nil)
 }
 
-func (p *ClimbedController) Edit(c echo.Context) error {
-	return c.JSON(http.StatusOK, "edit api")
+// TODO: implement
+func (cc *ClimbedController) Edit(c echo.Context) error {
+	return c.JSON(http.StatusOK, nil)
 }
 
-func (p *ClimbedController) Show(c echo.Context) error {
-	return c.JSON(http.StatusOK, "sho api")
+func (cc *ClimbedController) Show(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+	mountain, err := cc.Interactor.ClimbedMountainById(id)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	return c.JSON(http.StatusOK, mountain)
 }
 
-func (p *ClimbedController) Delete(c echo.Context) error {
-	return c.JSON(http.StatusOK, "delete")
+// TODO: implement
+func (cc *ClimbedController) Delete(c echo.Context) error {
+	return c.JSON(http.StatusOK, nil)
+}
+
+func (cc *ClimbedController) Gets(c echo.Context) error {
+	mountains, err := cc.Interactor.Gets()
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	return c.JSON(http.StatusOK, mountains)
 }

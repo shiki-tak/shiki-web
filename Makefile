@@ -37,4 +37,5 @@ run-mongodb:
 	docker-compose -f ./app/db/mongo/docker-compose.yml up -d
 
 run-mysql:
+	rm -rf ./app/db/mysql/data
 	docker-compose -f ./app/db/mysql/docker-compose.yml up -d

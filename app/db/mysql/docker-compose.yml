@@ -3,8 +3,10 @@ version: '3'
 services:
   mysql:
     image: mysql:latest
+    hostname: mysql
     container_name: mysql
     volumes:
+      - ./data:/var/lib/mysql
       - ./my.cnf:/etc/mysql/conf.d/my.cnf
       - ./init:/docker-entrypoint-initdb.d
     environment:
@@ -13,6 +15,8 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       TZ: 'Asia/Tokyo'
+    ports:
+      - "3306:3306"
   phpmyadmin:
     container_name: phpmyadmin
     image: phpmyadmin/phpmyadmin

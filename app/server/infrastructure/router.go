@@ -16,6 +16,7 @@ const (
 	editPath       = v1 + climbed.Path + climbedIdParam
 	showPath       = v1 + climbed.Path + climbedIdParam
 	deletePath     = v1 + climbed.Path + climbedIdParam
+	showsPath      = v1 + climbed.Path
 
 	mongoURL = "mongodb://localhost:27017"
 )
@@ -30,11 +31,11 @@ func Init(port string) {
 	// request-id=c.Response().Header().Get(echo.HeaderXRequestID)
 	e.Use(middleware.RequestID())
 
-	mongoDBhandler, err := NewMongoDBHandler(mongoURL)
-	if err != nil {
-		panic(err)
-	}
-	climbedController := climbed.NewClimbedController(mongoDBhandler)
+	// mongoDBhandler, err := NewMongoDBHandler(mongoURL)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	climbedController := climbed.NewClimbedController(NewSqlHandler())
 
 	api := e.Group("/api")
 
@@ -46,6 +47,7 @@ func Init(port string) {
 	api.PUT(editPath, climbedController.Edit)
 	api.GET(showPath, climbedController.Show)
 	api.DELETE(deletePath, climbedController.Delete)
+	api.GET(showsPath, climbedController.Gets)
 
 	e.Logger.Fatal(e.Start(":" + port))
 }
