@@ -43,8 +43,22 @@ func (cc *ClimbedController) Create(c echo.Context) error {
 	return c.JSON(http.StatusOK, nil)
 }
 
-// TODO: implement
 func (cc *ClimbedController) Edit(c echo.Context) error {
+	cm := domain.ClimbedMountain{}
+	if err := c.Bind(&cm); err != nil {
+		return err
+	}
+	id, err := strconv.Atoi(c.Param(Id))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	cm.ID = id
+	err = cc.Interactor.Update(cm)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
 	return c.JSON(http.StatusOK, nil)
 }
 
@@ -53,7 +67,7 @@ func (cc *ClimbedController) Show(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
-	mountain, err := cc.Interactor.ClimbedMountainById(id)
+	mountain, err := cc.Interactor.GetById(id)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
@@ -61,8 +75,17 @@ func (cc *ClimbedController) Show(c echo.Context) error {
 	return c.JSON(http.StatusOK, mountain)
 }
 
-// TODO: implement
 func (cc *ClimbedController) Delete(c echo.Context) error {
+	id, err := strconv.Atoi(c.Param(Id))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	err = cc.Interactor.DeleteGetById(id)
+	if err != nil {
+		return c.JSON(http.StatusForbidden, err)
+	}
+
 	return c.JSON(http.StatusOK, nil)
 }
 
