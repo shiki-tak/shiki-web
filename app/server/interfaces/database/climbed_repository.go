@@ -40,10 +40,10 @@ func (repo *ClimbedMountainRepository) FindById(key int) (domain.ClimbedMountain
 	var climbedMountain domain.ClimbedMountain
 	getStatement := fmt.Sprintf("%s %s (%s) %s", selectC, tableName, fields, v7)
 	row, err := repo.Query(getStatement, key)
-	defer row.Close()
 	if err != nil {
 		return climbedMountain, err
 	}
+	defer row.Close()
 
 	row.Next()
 	var (
@@ -74,10 +74,11 @@ func (repo *ClimbedMountainRepository) Gets() ([]domain.ClimbedMountain, error) 
 	ｍountains := []domain.ClimbedMountain{}
 	getsStatement := fmt.Sprintf("%s id %s %s %s", selectC, fields, from, tableName)
 	rows, err := repo.Query(getsStatement)
-	defer rows.Close()
 	if err != nil {
 		return ｍountains, err
 	}
+	defer rows.Close()
+
 	for rows.Next() {
 		mountain := domain.ClimbedMountain{}
 		if err = rows.Scan(&mountain.ID, &mountain.Name, &mountain.Height, &mountain.ClimbedDate,

@@ -18,7 +18,7 @@ const (
 	deletePath     = v1 + climbed.Path + climbedIdParam
 	showsPath      = v1 + climbed.Path
 
-	mongoURL = "mongodb://localhost:27017"
+	// mongoURL = "mongodb://localhost:27017"
 )
 
 func Init(port string) {
