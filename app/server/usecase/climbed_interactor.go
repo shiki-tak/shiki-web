@@ -32,7 +32,7 @@ func (interactor *ClimbedMountainInteractor) Gets() ([]domain.ClimbedMountain, e
 	return climbedMountains, nil
 }
 
-func (interactor *ClimbedMountainInteractor) DeleteGetById(id int) error {
+func (interactor *ClimbedMountainInteractor) Remove(id int) error {
 	err := interactor.ClimbedRepository.Delete(id)
 	if err != nil {
 		return err
