@@ -11,13 +11,22 @@ type ClimbedMountainRepository struct {
 }
 
 const (
-	fields    = "name, height, climbed_date,weather, number, description, image_url"
-	values    = "VALUES "
-	v7        = values + "(?, ?, ?, ?, ?, ?, ?)"
+	fields        = "name, height, climbed_date, weather, number, description, image_url"
+	uFieldsFormat = "name=?, height=?, climbed_date=?, weather=?, number=?, description=?, image_url=?"
+
+	values = "VALUES "
+	v7     = values + "(?, ?, ?, ?, ?, ?, ?)"
+
 	tableName = "climbed_mountains"
-	insertC   = "INSERT INTO "
-	selectC   = "SELECT "
-	from      = "FROM "
+
+	insertC = "INSERT INTO"
+	updateC = "UPDATE"
+	selectC = "SELECT"
+	deleteC = "DELETE"
+
+	from  = "FROM"
+	where = "WHERE"
+	set   = "SET"
 )
 
 func (repo *ClimbedMountainRepository) Store(m domain.ClimbedMountain) error {
@@ -36,10 +45,21 @@ func (repo *ClimbedMountainRepository) Store(m domain.ClimbedMountain) error {
 	return nil
 }
 
-func (repo *ClimbedMountainRepository) FindById(key int) (domain.ClimbedMountain, error) {
+func (repo *ClimbedMountainRepository) Update(m domain.ClimbedMountain) error {
+	updateStatement := fmt.Sprintf("%s %s %s %s %s id=%d", updateC, tableName, set, uFieldsFormat, where, m.ID)
+	_, err := repo.Execute(updateStatement, m.Name, m.Height, m.ClimbedDate, m.Weather, m.Number, m.Description, m.ImageURL)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (repo *ClimbedMountainRepository) FindById(id int) (domain.ClimbedMountain, error) {
 	var climbedMountain domain.ClimbedMountain
-	getStatement := fmt.Sprintf("%s %s (%s) %s", selectC, tableName, fields, v7)
-	row, err := repo.Query(getStatement, key)
+	getStatement := fmt.Sprintf("%s %s %s %s %s id=?", selectC, fields, from, tableName, where)
+
+	row, err := repo.Query(getStatement, id)
 	if err != nil {
 		return climbedMountain, err
 	}
@@ -58,7 +78,7 @@ func (repo *ClimbedMountainRepository) FindById(key int) (domain.ClimbedMountain
 	if err = row.Scan(&name, &height, &climbedDate, &weather, &number, &description, &imageURL); err != nil {
 		return climbedMountain, err
 	}
-	climbedMountain.ID = key
+	climbedMountain.ID = id
 	climbedMountain.Name = name
 	climbedMountain.Height = height
 	climbedMountain.ClimbedDate = climbedDate
@@ -70,9 +90,9 @@ func (repo *ClimbedMountainRepository) FindById(key int) (domain.ClimbedMountain
 	return climbedMountain, nil
 }
 
-func (repo *ClimbedMountainRepository) Gets() ([]domain.ClimbedMountain, error) {
+func (repo *ClimbedMountainRepository) Finds() ([]domain.ClimbedMountain, error) {
 	ｍountains := []domain.ClimbedMountain{}
-	getsStatement := fmt.Sprintf("%s id %s %s %s", selectC, fields, from, tableName)
+	getsStatement := fmt.Sprintf("%s id, %s %s %s", selectC, fields, from, tableName)
 	rows, err := repo.Query(getsStatement)
 	if err != nil {
 		return ｍountains, err
@@ -88,4 +108,14 @@ func (repo *ClimbedMountainRepository) Gets() ([]domain.ClimbedMountain, error) 
 		ｍountains = append(ｍountains, mountain)
 	}
 	return ｍountains, nil
+}
+
+func (repo *ClimbedMountainRepository) Delete(id int) error {
+	deleteStatement := fmt.Sprintf("%s %s %s %s id=%d", deleteC, from, tableName, where, id)
+	_, err := repo.Execute(deleteStatement)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

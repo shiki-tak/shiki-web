@@ -12,18 +12,31 @@ func (interactor *ClimbedMountainInteractor) Add(m domain.ClimbedMountain) error
 	return interactor.ClimbedRepository.Store(m)
 }
 
+func (interactor *ClimbedMountainInteractor) Update(m domain.ClimbedMountain) error {
+	return interactor.ClimbedRepository.Update(m)
+}
+
+func (interactor *ClimbedMountainInteractor) GetById(id int) (domain.ClimbedMountain, error) {
+	climbedMountain, err := interactor.ClimbedRepository.FindById(id)
+	if err != nil {
+		return domain.ClimbedMountain{}, err
+	}
+	return climbedMountain, nil
+}
+
 func (interactor *ClimbedMountainInteractor) Gets() ([]domain.ClimbedMountain, error) {
-	climbedMountains, err := interactor.ClimbedRepository.Gets()
+	climbedMountains, err := interactor.ClimbedRepository.Finds()
 	if err != nil {
 		return nil, err
 	}
 	return climbedMountains, nil
 }
 
-func (interactor *ClimbedMountainInteractor) ClimbedMountainById(key int) (domain.ClimbedMountain, error) {
-	climbedMountain, err := interactor.ClimbedRepository.FindById(key)
+func (interactor *ClimbedMountainInteractor) DeleteGetById(id int) error {
+	err := interactor.ClimbedRepository.Delete(id)
 	if err != nil {
-		return domain.ClimbedMountain{}, err
+		return err
 	}
-	return climbedMountain, nil
+
+	return nil
 }
