@@ -4,9 +4,9 @@ import (
 	"testing"
 )
 
-const (
-	echoP = "1323/tcp"
-)
+// const (
+// 	echoP = "1323/tcp"
+// )
 
 func Test_Echo(t *testing.T) {
 	// You need to connect the container of the server with the container of the db.
