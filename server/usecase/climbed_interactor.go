@@ -24,8 +24,8 @@ func (interactor *ClimbedMountainInteractor) GetById(id int) (domain.ClimbedMoun
 	return climbedMountain, nil
 }
 
-func (interactor *ClimbedMountainInteractor) Gets() ([]domain.ClimbedMountain, error) {
-	climbedMountains, err := interactor.ClimbedRepository.Finds()
+func (interactor *ClimbedMountainInteractor) GetAll() ([]domain.ClimbedMountain, error) {
+	climbedMountains, err := interactor.ClimbedRepository.FindAll()
 	if err != nil {
 		return nil, err
 	}

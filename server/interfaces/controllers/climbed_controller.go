@@ -89,8 +89,8 @@ func (cc *ClimbedController) Delete(c echo.Context) error {
 	return c.JSON(http.StatusOK, nil)
 }
 
-func (cc *ClimbedController) Gets(c echo.Context) error {
-	mountains, err := cc.Interactor.Gets()
+func (cc *ClimbedController) GetAll(c echo.Context) error {
+	mountains, err := cc.Interactor.GetAll()
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}

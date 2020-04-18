@@ -6,6 +6,6 @@ type ClimbedMountainRepository interface {
 	Store(domain.ClimbedMountain) error
 	Update(domain.ClimbedMountain) error
 	FindById(int) (domain.ClimbedMountain, error)
-	Finds() ([]domain.ClimbedMountain, error)
+	FindAll() ([]domain.ClimbedMountain, error)
 	Delete(int) error
 }
