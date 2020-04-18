@@ -30,7 +30,18 @@ const (
 )
 
 func (repo *ClimbedMountainRepository) Store(m domain.ClimbedMountain) error {
-	// TODO: climbed_mountain -> change to const value
+	var err error
+	err = repo.TxBegin()
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		if err != nil {
+			_ = repo.TxRollback()
+		}
+	}()
+
 	insertStatement := fmt.Sprintf("%s %s (%s) %s", insertC, tableName, fields, v7)
 	result, err := repo.Execute(insertStatement, m.Name, m.Height, m.ClimbedDate, m.Weather, m.Number, m.Description, m.ImageURL)
 	if err != nil {
@@ -41,14 +52,33 @@ func (repo *ClimbedMountainRepository) Store(m domain.ClimbedMountain) error {
 	if err != nil {
 		return err
 	}
+	if err = repo.TxCommit(); err != nil {
+		return err
+	}
 
 	return nil
 }
 
 func (repo *ClimbedMountainRepository) Update(m domain.ClimbedMountain) error {
-	updateStatement := fmt.Sprintf("%s %s %s %s %s id=%d", updateC, tableName, set, uFieldsFormat, where, m.ID)
-	_, err := repo.Execute(updateStatement, m.Name, m.Height, m.ClimbedDate, m.Weather, m.Number, m.Description, m.ImageURL)
+	var err error
+	err = repo.TxBegin()
 	if err != nil {
+		return err
+	}
+
+	defer func() {
+		if err != nil {
+			_ = repo.TxRollback()
+		}
+	}()
+
+	updateStatement := fmt.Sprintf("%s %s %s %s %s id=%d", updateC, tableName, set, uFieldsFormat, where, m.ID)
+	_, err = repo.Execute(updateStatement, m.Name, m.Height, m.ClimbedDate, m.Weather, m.Number, m.Description, m.ImageURL)
+	if err != nil {
+		return err
+	}
+
+	if err = repo.TxCommit(); err != nil {
 		return err
 	}
 
@@ -90,7 +120,7 @@ func (repo *ClimbedMountainRepository) FindById(id int) (domain.ClimbedMountain,
 	return climbedMountain, nil
 }
 
-func (repo *ClimbedMountainRepository) Finds() ([]domain.ClimbedMountain, error) {
+func (repo *ClimbedMountainRepository) FindAll() ([]domain.ClimbedMountain, error) {
 	ｍountains := []domain.ClimbedMountain{}
 	getsStatement := fmt.Sprintf("%s id, %s %s %s", selectC, fields, from, tableName)
 	rows, err := repo.Query(getsStatement)
@@ -111,9 +141,25 @@ func (repo *ClimbedMountainRepository) Finds() ([]domain.ClimbedMountain, error)
 }
 
 func (repo *ClimbedMountainRepository) Delete(id int) error {
-	deleteStatement := fmt.Sprintf("%s %s %s %s id=%d", deleteC, from, tableName, where, id)
-	_, err := repo.Execute(deleteStatement)
+	var err error
+	err = repo.TxBegin()
 	if err != nil {
+		return err
+	}
+
+	defer func() {
+		if err != nil {
+			_ = repo.TxRollback()
+		}
+	}()
+
+	deleteStatement := fmt.Sprintf("%s %s %s %s id=%d", deleteC, from, tableName, where, id)
+	_, err = repo.Execute(deleteStatement)
+	if err != nil {
+		return err
+	}
+
+	if err = repo.TxCommit(); err != nil {
 		return err
 	}
 

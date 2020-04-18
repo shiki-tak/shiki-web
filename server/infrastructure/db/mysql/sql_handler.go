@@ -1,4 +1,4 @@
-package infrastructure
+package mysql
 
 import (
 	"database/sql"
@@ -11,35 +11,61 @@ import (
 )
 
 type SqlHandler struct {
-	Conn *sql.DB
+	DB *sql.DB
+	Tx *sql.Tx
 }
 
 func NewSqlHandler() *SqlHandler {
 	// "user:password@tcp(localhost:3306)/database"
 	dns := fmt.Sprintf("%s:%s@%s(%s)/%s", "user", "password", "tcp", "localhost:3306", "database")
-	conn, err := sql.Open("mysql", dns)
+	db, err := sql.Open("mysql", dns)
 	if err != nil {
 		log.Fatalf("Could not open db: %v", err)
 		panic(err.Error)
 	}
 	sqlHandler := new(SqlHandler)
-	sqlHandler.Conn = conn
+	sqlHandler.DB = db
 	return sqlHandler
+}
+
+func (handler *SqlHandler) TxBegin() error {
+	tx, err := handler.DB.Begin()
+	if err != nil {
+		return err
+	}
+
+	handler.Tx = tx
+	return nil
+}
+
+func (handler *SqlHandler) TxCommit() error {
+	if err := handler.Tx.Commit(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (handler *SqlHandler) TxRollback() error {
+	if err := handler.Tx.Rollback(); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (handler *SqlHandler) Execute(statement string, args ...interface{}) (database.Result, error) {
 	res := SqlResult{}
-	result, err := handler.Conn.Exec(statement, args...)
+	result, err := handler.Tx.Exec(statement, args...)
 	if err != nil {
 		return res, err
 	}
+
 	res.Result = result
 	return res, nil
 }
 
 func (handler *SqlHandler) Query(statement string, args ...interface{}) (database.Row, error) {
 	row := new(SqlRow)
-	rows, err := handler.Conn.Query(statement, args...)
+	rows, err := handler.DB.Query(statement, args...)
 	if err != nil {
 		return row, err
 	}
