@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/shiki-tak/shiki-web/app/server"
+	"github.com/shiki-tak/shiki-web/server"
 )
 
 const (

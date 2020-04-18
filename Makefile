@@ -41,8 +41,8 @@ run-server: build-docker
 	docker run -p 1323:1323 shikitak/shiki-web:latest
 
 run-mongodb:
-	docker-compose -f ./app/db/mongo/docker-compose.yml up -d
+	docker-compose -f ./db/mongo/docker-compose.yml up -d
 
 run-mysql:
-	rm -rf ./app/db/mysql/data
-	docker-compose -f ./app/db/mysql/docker-compose.yml up -d
+	rm -rf ./db/mysql/data
+	docker-compose -f ./db/mysql/docker-compose.yml up -d

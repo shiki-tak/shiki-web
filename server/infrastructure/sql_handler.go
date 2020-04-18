@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/shiki-tak/shiki-web/app/server/interfaces/database"
+	"github.com/shiki-tak/shiki-web/server/interfaces/database"
 
 	_ "github.com/go-sql-driver/mysql"
 )

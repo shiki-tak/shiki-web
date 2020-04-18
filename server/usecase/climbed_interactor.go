@@ -1,7 +1,7 @@
 package usecase
 
 import (
-	"github.com/shiki-tak/shiki-web/app/server/domain"
+	"github.com/shiki-tak/shiki-web/server/domain"
 )
 
 type ClimbedMountainInteractor struct {

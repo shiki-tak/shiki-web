@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
-	climbed "github.com/shiki-tak/shiki-web/app/server/interfaces/controllers"
+	climbed "github.com/shiki-tak/shiki-web/server/interfaces/controllers"
 )
 
 const (

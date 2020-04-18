@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/shiki-tak/shiki-web/app/cmd/root"
+	"github.com/shiki-tak/shiki-web/cmd/root"
 )
 
 func main() {

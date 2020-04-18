@@ -4,6 +4,6 @@ curl -X POST 'http://localhost:1323/api/v1/climbed_mountains' -d '{"name": "大�
 curl -X GET 'http://localhost:1323/api/v1/climbed_mountains/1'
 curl -X GET 'http://localhost:1323/api/v1/climbed_mountains'
 
-curl -X DELETE 'http://localhost:1323/api/v1/climbed_mountains/3'
+curl -X DELETE 'http://localhost:1323/api/v1/climbed_mountains/2'
 
-curl -X PUT 'http://localhost:1323/api/v1/climbed_mountains/12' -d '{"name": "大山", "height": 1729, "climbed_date": "2015/09/20", "weather": "晴れ", "number": 2, "description": "初めて地元の友達と一緒に登った山", "image_url": ""}' -H 'Content-Type: application/json'
+curl -X PUT 'http://localhost:1323/api/v1/climbed_mountains/2' -d '{"name": "大山", "height": 1729, "climbed_date": "2015/09/20", "weather": "晴れ", "number": 2, "description": "初めて地元の友達と一緒に登った山", "image_url": ""}' -H 'Content-Type: application/json'
