@@ -5,6 +5,13 @@ GOTEST=$(GOCMD) test
 BINARY_HOME=build
 BINARY_NAME=shiki-web
 
+golangci-lint:
+	@go get github.com/golangci/golangci-lint/cmd/golangci-lint
+
+lint: golangci-lint
+	$(GOCMD) mod verify
+	golangci-lint run
+
 go.sum: go.mod
 	@echo "--> Ensure dependencies have not been modified"
 	@go mod verify
@@ -13,7 +20,7 @@ clean:
 	rm -rf ./${BINARY_HOME}
 	mkdir ./build
 
-build: clean
+build: clean lint test
 	$(GOBUILD) -o ${BINARY_HOME}/$(BINARY_NAME) -v
 
 test:
