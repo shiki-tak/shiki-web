@@ -1,7 +1,7 @@
 package root
 
 import (
-	"github.com/shiki-tak/shiki-web/app/cmd/server"
+	"github.com/shiki-tak/shiki-web/cmd/server"
 	"github.com/spf13/cobra"
 )
 

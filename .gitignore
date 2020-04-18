@@ -37,6 +37,6 @@ dist
 node_modules
 
 # DB
-/app/db/mysql/data
-/app/db/mongo/db
-/app/db/mongo/configdb
+/db/mysql/data
+/db/mongo/db
+/db/mongo/configdb

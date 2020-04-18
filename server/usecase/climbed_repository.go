@@ -1,6 +1,6 @@
 package usecase
 
-import "github.com/shiki-tak/shiki-web/app/server/domain"
+import "github.com/shiki-tak/shiki-web/server/domain"
 
 type ClimbedMountainRepository interface {
 	Store(domain.ClimbedMountain) error

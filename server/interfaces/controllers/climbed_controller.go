@@ -5,9 +5,9 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo/v4"
-	"github.com/shiki-tak/shiki-web/app/server/domain"
-	"github.com/shiki-tak/shiki-web/app/server/interfaces/database"
-	"github.com/shiki-tak/shiki-web/app/server/usecase"
+	"github.com/shiki-tak/shiki-web/server/domain"
+	"github.com/shiki-tak/shiki-web/server/interfaces/database"
+	"github.com/shiki-tak/shiki-web/server/usecase"
 )
 
 const (

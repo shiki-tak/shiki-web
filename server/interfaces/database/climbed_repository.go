@@ -3,7 +3,7 @@ package database
 import (
 	"fmt"
 
-	"github.com/shiki-tak/shiki-web/app/server/domain"
+	"github.com/shiki-tak/shiki-web/server/domain"
 )
 
 type ClimbedMountainRepository struct {
